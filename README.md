@@ -1,2 +1,4 @@
-# ca-brampton-transit-bus-parser
+ca-brampton-transit-bus-parser
+==============================
+
 Parser for Brampton Transit Bus data
