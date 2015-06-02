@@ -220,12 +220,16 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String WESTBOUND = "westbound";
 	private static final String WEST = "west";
+	private static final String WB = " wb-";
 	private static final String EASTBOUND = "eastbound";
 	private static final String EAST = "east";
+	private static final String EB = " eb-";
 	private static final String SOUTHBOUND = "southbound";
 	private static final String SOUTH = "south";
+	private static final String SB = " sb-";
 	private static final String NORTHBOUND = "northbound";
 	private static final String NORTH = "north";
+	private static final String NB = " nb-";
 
 	private static final String TO = " to ";
 	private static final String VIA = " via ";
@@ -248,16 +252,16 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		if (indexOfVIA >= 0) {
 			gTripHeadsignLC = gTripHeadsignLC.substring(0, indexOfVIA);
 		}
-		if (gTripHeadsignLC.endsWith(NORTH) || gTripHeadsignLC.endsWith(NORTHBOUND)) {
+		if (gTripHeadsignLC.endsWith(NORTH) || gTripHeadsignLC.endsWith(NORTHBOUND) || gTripHeadsignLC.contains(NB)) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(SOUTH) || gTripHeadsignLC.endsWith(SOUTHBOUND)) {
+		} else if (gTripHeadsignLC.endsWith(SOUTH) || gTripHeadsignLC.endsWith(SOUTHBOUND) || gTripHeadsignLC.contains(SB)) {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(EAST) || gTripHeadsignLC.endsWith(EASTBOUND)) {
+		} else if (gTripHeadsignLC.endsWith(EAST) || gTripHeadsignLC.endsWith(EASTBOUND) || gTripHeadsignLC.contains(EB)) {
 			mTrip.setHeadsignDirection(MDirectionType.EAST);
 			return;
-		} else if (gTripHeadsignLC.endsWith(WEST) || gTripHeadsignLC.endsWith(WESTBOUND)) {
+		} else if (gTripHeadsignLC.endsWith(WEST) || gTripHeadsignLC.endsWith(WESTBOUND) || gTripHeadsignLC.contains(WB)) {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
 			return;
 		}
@@ -275,6 +279,16 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				return;
 			}
 		} else if (mRoute.id == 14l) {
+			if (gTrip.direction_id == 1) {
+				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+				return;
+			}
+		} else if (mRoute.id == 15l) {
+			if (gTrip.direction_id == 1) {
+				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+				return;
+			}
+		} else if (mRoute.id == 18l) {
 			if (gTrip.direction_id == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
