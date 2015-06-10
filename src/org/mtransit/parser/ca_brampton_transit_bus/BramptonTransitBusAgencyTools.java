@@ -356,6 +356,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String cleanStopName(String gStopName) {
+		gStopName = MSpec.CLEAN_SLASHES.matcher(gStopName).replaceAll(MSpec.CLEAN_SLASHES_REPLACEMENT);
 		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
 		gStopName = MSpec.cleanNumbers(gStopName);
 		return MSpec.cleanLabel(gStopName);
