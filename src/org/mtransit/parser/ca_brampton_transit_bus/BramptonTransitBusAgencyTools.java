@@ -77,7 +77,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public long getRouteId(GRoute gRoute) {
-		String routeId = gRoute.route_id;
+		String routeId = gRoute.getRouteId();
 		if (routeId != null && routeId.length() > 0 && Utils.isDigitsOnly(routeId)) {
 			return Integer.valueOf(routeId); // using stop code as stop ID
 		}
@@ -91,7 +91,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteLongName(GRoute gRoute) {
-		String routeLongName = gRoute.route_long_name;
+		String routeLongName = gRoute.getRouteLongName();
 		routeLongName = ROUTE.matcher(routeLongName).replaceAll(ROUTE_REPLACEMENT);
 		return CleanUtils.cleanLabel(routeLongName);
 	}
@@ -144,7 +144,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		Matcher matcher = DIGITS.matcher(gRoute.route_id);
+		Matcher matcher = DIGITS.matcher(gRoute.getRouteId());
 		matcher.find();
 		int routeId = Integer.parseInt(matcher.group());
 		switch (routeId) {
@@ -243,7 +243,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
-		String gTripHeadsignLC = gTrip.trip_headsign.toLowerCase(Locale.ENGLISH);
+		String gTripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
 		int indexOfTO = gTripHeadsignLC.indexOf(TO);
 		if (indexOfTO >= 0) {
 			gTripHeadsignLC = gTripHeadsignLC.substring(0, indexOfTO);
@@ -266,78 +266,78 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			return;
 		}
 		if (mRoute.id == 7l) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
-			} else if (gTrip.direction_id == 1) {
+			} else if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 9l) {
-			if (gTrip.direction_id == 1) {
+			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.WEST);
 				return;
 			}
 		} else if (mRoute.id == 14l) {
-			if (gTrip.direction_id == 1) {
+			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 15l) {
-			if (gTrip.direction_id == 1) {
+			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 18l) {
-			if (gTrip.direction_id == 1) {
+			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 26l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 30l) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
-			} else if (gTrip.direction_id == 1) {
+			} else if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 32l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 33l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 50l) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
-			} else if (gTrip.direction_id == 1) {
+			} else if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
 		} else if (mRoute.id == 53l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 54l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 58l) {
-			mTrip.setHeadsignString(LOOP, gTrip.direction_id);
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		} else if (mRoute.id == 501l) {
-			if (gTrip.direction_id == 0) {
+			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.EAST);
 				return;
-			} else if (gTrip.direction_id == 1) {
+			} else if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.WEST);
 				return;
 			}
 		}
-		int directionId = gTrip.direction_id;
-		String stationName = cleanTripHeadsign(gTrip.trip_headsign);
+		int directionId = gTrip.getDirectionId();
+		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
 		if (gTripHeadsignLC.endsWith(ENDS_WITH_AM)) {
 			stationName = AM;
 		} else if (gTripHeadsignLC.endsWith(ENDS_WITH_PM)) {
@@ -356,7 +356,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String cleanStopName(String gStopName) {
-		gStopName = CleanUtils.CLEAN_SLASHES.matcher(gStopName).replaceAll(CleanUtils.CLEAN_SLASHES_REPLACEMENT);
+		gStopName = CleanUtils.cleanSlashes(gStopName);
 		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
@@ -364,7 +364,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public int getStopId(GStop gStop) {
-		String stopId = gStop.stop_id;
+		String stopId = gStop.getStopId();
 		if (stopId != null && stopId.length() > 0 && Utils.isDigitsOnly(stopId)) {
 			return Integer.valueOf(stopId);
 		}
