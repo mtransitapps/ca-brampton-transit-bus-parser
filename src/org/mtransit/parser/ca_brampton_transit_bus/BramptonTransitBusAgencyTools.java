@@ -73,17 +73,9 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return MAgency.ROUTE_TYPE_BUS;
 	}
 
-	private static final Pattern DIGITS = Pattern.compile("[\\d]+");
-
 	@Override
 	public long getRouteId(GRoute gRoute) {
-		String routeId = gRoute.getRouteId();
-		if (routeId != null && routeId.length() > 0 && Utils.isDigitsOnly(routeId)) {
-			return Integer.valueOf(routeId); // using stop code as stop ID
-		}
-		Matcher matcher = DIGITS.matcher(routeId);
-		matcher.find();
-		return Long.parseLong(matcher.group());
+		return Long.parseLong(gRoute.getRouteShortName()); // using route short name as route ID
 	}
 
 	private static final Pattern ROUTE = Pattern.compile("(route)", Pattern.CASE_INSENSITIVE);
@@ -103,14 +95,18 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
+	private static final String COLOR_04567E = "04567E";
 	private static final String COLOR_274867 = "274867";
 	private static final String COLOR_ED1C24 = "ED1C24";
+	private static final String COLOR_1B62B7 = "1B62B7";
 	private static final String COLOR_8DC73F = "8DC73F";
 	private static final String COLOR_009081 = "009081";
 	private static final String COLOR_F26667 = "F26667";
+	private static final String COLOR_1E6649 = "1E6649";
 	private static final String COLOR_9E76B4 = "9E76B4";
 	private static final String COLOR_0066B3 = "0066B3";
 	private static final String COLOR_0095DA = "0095DA";
+	private static final String COLOR_2E917D = "2E917D";
 	private static final String COLOR_56C5D0 = "56C5D0";
 	private static final String COLOR_32327B = "32327B";
 	private static final String COLOR_942976 = "942976";
@@ -136,6 +132,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final String COLOR_CF8B2D = "CF8B2D";
 	private static final String COLOR_029CAA = "029CAA";
 	private static final String COLOR_007A5E = "007A5E";
+	private static final String COLOR_8B4A8A = "8B4A8A";
 	private static final String COLOR_A6664C = "A6664C";
 	private static final String COLOR_00AEEF = "00AEEF";
 	private static final String COLOR_C6168D = "C6168D";
@@ -144,16 +141,15 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
-		Matcher matcher = DIGITS.matcher(gRoute.getRouteId());
-		matcher.find();
-		int routeId = Integer.parseInt(matcher.group());
-		switch (routeId) {
+		int rsn = Integer.parseInt(gRoute.getRouteShortName());
+		switch (rsn) {
 		// @formatter:off
 		case 1: return COLOR_2E3092;
 		case 2: return COLOR_C6168D;
 		case 3: return COLOR_00AEEF;
 		case 4: return COLOR_A6664C;
 		case 5: return COLOR_007A5E;
+		case 6: return COLOR_8B4A8A;
 		case 7: return COLOR_029CAA;
 		case 8: return COLOR_CF8B2D;
 		case 9: return COLOR_00A88E;
@@ -179,6 +175,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 32: return COLOR_942976;
 		case 33: return COLOR_32327B;
 		case 35: return COLOR_F7931D;
+		case 36: return COLOR_2E917D;
 		case 40: return COLOR_56C5D0;
 		case 50: return COLOR_0095DA;
 		case 51: return COLOR_E4A024;
@@ -186,9 +183,12 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 53: return COLOR_F48473;
 		case 54: return COLOR_9E76B4;
 		case 56: return COLOR_F26667;
+		case 57: return COLOR_1E6649;
 		case 58: return COLOR_009081;
+		case 60: return COLOR_1B62B7;
 		case 92: return COLOR_8DC73F;
 		case 115: return COLOR_274867;
+		case 185: return COLOR_04567E;
 		case 200: return COLOR_0161AB;
 		case 201: return COLOR_0161AB;
 		case 202: return COLOR_0161AB;
@@ -206,13 +206,14 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 214: return COLOR_0161AB;
 		case 215: return COLOR_0161AB;
 		case 216: return COLOR_0161AB;
+		case 217: return COLOR_0161AB;
 		case 501: return COLOR_ED1C24;
 		case 502: return COLOR_ED1C24;
 		case 505: return COLOR_ED1C24;
 		case 511: return COLOR_ED1C24;
 		// @formatter:on
 		default:
-			System.out.println("getRouteColor() > Unexpected route ID color '" + routeId + "' (" + gRoute + ")");
+			System.out.printf("\nUnexpected route color '%s'\n", gRoute);
 			System.exit(-1);
 			return null;
 		}
@@ -324,6 +325,14 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		} else if (mRoute.id == 54l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
+		} else if (mRoute.id == 57l) {
+			if (gTrip.getDirectionId() == 0) {
+				mTrip.setHeadsignDirection(MDirectionType.NORTH);
+				return;
+			} else if (gTrip.getDirectionId() == 1) {
+				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+				return;
+			}
 		} else if (mRoute.id == 58l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
@@ -359,8 +368,11 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		gStopName = CleanUtils.cleanSlashes(gStopName);
 		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
+		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
 	}
+
+	private static final Pattern DIGITS = Pattern.compile("[\\d]+");
 
 	@Override
 	public int getStopId(GStop gStop) {
