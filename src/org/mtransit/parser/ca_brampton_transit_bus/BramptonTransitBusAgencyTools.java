@@ -237,6 +237,8 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String LOOP = "Loop";
 
+	private static final String LOOP_LC = "loop";
+
 	private static final String ENDS_WITH_AM = " am";
 	private static final String ENDS_WITH_PM = " pm";
 	private static final String PM = "PM";
@@ -264,6 +266,10 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			return;
 		} else if (gTripHeadsignLC.endsWith(WEST) || gTripHeadsignLC.endsWith(WESTBOUND) || gTripHeadsignLC.contains(WB)) {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
+			return;
+		}
+		if (gTripHeadsignLC.endsWith(LOOP_LC)) {
+			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		}
 		if (mRoute.id == 7l) {
@@ -345,14 +351,14 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				return;
 			}
 		}
-		int directionId = gTrip.getDirectionId();
-		String stationName = cleanTripHeadsign(gTrip.getTripHeadsign());
 		if (gTripHeadsignLC.endsWith(ENDS_WITH_AM)) {
-			stationName = AM;
+			mTrip.setHeadsignString(AM, gTrip.getDirectionId());
+			return;
 		} else if (gTripHeadsignLC.endsWith(ENDS_WITH_PM)) {
-			stationName = PM;
+			mTrip.setHeadsignString(PM, gTrip.getDirectionId());
+			return;
 		}
-		mTrip.setHeadsignString(stationName, directionId);
+		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
 	}
 
 	@Override
