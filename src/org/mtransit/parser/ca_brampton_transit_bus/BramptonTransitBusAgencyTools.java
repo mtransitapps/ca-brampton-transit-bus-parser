@@ -272,7 +272,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		}
-		if (mRoute.id == 7l) {
+		if (mRoute.getId() == 7l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
@@ -280,30 +280,30 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 9l) {
+		} else if (mRoute.getId() == 9l) {
 			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.WEST);
 				return;
 			}
-		} else if (mRoute.id == 14l) {
+		} else if (mRoute.getId() == 14l) {
 			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 15l) {
+		} else if (mRoute.getId() == 15l) {
 			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 18l) {
+		} else if (mRoute.getId() == 18l) {
 			if (gTrip.getDirectionId() == 1) {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 26l) {
+		} else if (mRoute.getId() == 26l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 30l) {
+		} else if (mRoute.getId() == 30l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
@@ -311,13 +311,13 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 32l) {
+		} else if (mRoute.getId() == 32l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 33l) {
+		} else if (mRoute.getId() == 33l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 50l) {
+		} else if (mRoute.getId() == 50l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
@@ -325,13 +325,13 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 53l) {
+		} else if (mRoute.getId() == 53l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 54l) {
+		} else if (mRoute.getId() == 54l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 57l) {
+		} else if (mRoute.getId() == 57l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.NORTH);
 				return;
@@ -339,10 +339,10 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 				return;
 			}
-		} else if (mRoute.id == 58l) {
+		} else if (mRoute.getId() == 58l) {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
-		} else if (mRoute.id == 501l) {
+		} else if (mRoute.getId() == 501l) {
 			if (gTrip.getDirectionId() == 0) {
 				mTrip.setHeadsignDirection(MDirectionType.EAST);
 				return;
@@ -366,13 +366,11 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return CleanUtils.cleanLabel(tripHeadsign);
 	}
 
-	private static final Pattern AT = Pattern.compile("( at )", Pattern.CASE_INSENSITIVE);
-	private static final String AT_REPLACEMENT = " / ";
 
 	@Override
 	public String cleanStopName(String gStopName) {
 		gStopName = CleanUtils.cleanSlashes(gStopName);
-		gStopName = AT.matcher(gStopName).replaceAll(AT_REPLACEMENT);
+		gStopName = CleanUtils.CLEAN_AT.matcher(gStopName).replaceAll(CleanUtils.CLEAN_AT_REPLACEMENT);
 		gStopName = CleanUtils.cleanNumbers(gStopName);
 		gStopName = CleanUtils.cleanStreetTypes(gStopName);
 		return CleanUtils.cleanLabel(gStopName);
