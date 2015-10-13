@@ -386,10 +386,14 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		}
 		try {
 			Matcher matcher = DIGITS.matcher(stopId);
-			matcher.find();
-			return Integer.parseInt(matcher.group());
+			if (matcher.find()) {
+				return Integer.parseInt(matcher.group());
+			}
+			System.out.printf("\nUnexpected stop ID  %s!\n", gStop);
+			System.exit(-1);
+			return -1;
 		} catch (Exception e) {
-			System.out.println("Error while finding stop ID for " + gStop);
+			System.out.printf("\nError while finding stop ID for %s.\n", gStop);
 			e.printStackTrace();
 			System.exit(-1);
 			return -1;
