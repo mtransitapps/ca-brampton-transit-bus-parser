@@ -97,7 +97,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String COLOR_04567E = "04567E";
 	private static final String COLOR_274867 = "274867";
-	private static final String COLOR_ED1C24 = "ED1C24";
+	private static final String COLOR_EC2027 = "EC2027";
 	private static final String COLOR_1B62B7 = "1B62B7";
 	private static final String COLOR_8DC73F = "8DC73F";
 	private static final String COLOR_009081 = "009081";
@@ -138,6 +138,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final String COLOR_C6168D = "C6168D";
 	private static final String COLOR_2E3092 = "2E3092";
 	private static final String COLOR_0161AB = "0161AB";
+	private static final String COLOR_F16567 = "F16567";
 
 	@Override
 	public String getRouteColor(GRoute gRoute) {
@@ -182,6 +183,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 52: return COLOR_0066B3;
 		case 53: return COLOR_F48473;
 		case 54: return COLOR_9E76B4;
+		case 55: return COLOR_F16567;
 		case 56: return COLOR_F26667;
 		case 57: return COLOR_1E6649;
 		case 58: return COLOR_009081;
@@ -189,6 +191,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 92: return COLOR_8DC73F;
 		case 115: return COLOR_274867;
 		case 185: return COLOR_04567E;
+		case 199: return COLOR_04567E;
 		case 200: return COLOR_0161AB;
 		case 201: return COLOR_0161AB;
 		case 202: return COLOR_0161AB;
@@ -207,10 +210,11 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 215: return COLOR_0161AB;
 		case 216: return COLOR_0161AB;
 		case 217: return COLOR_0161AB;
-		case 501: return COLOR_ED1C24;
-		case 502: return COLOR_ED1C24;
-		case 505: return COLOR_ED1C24;
-		case 511: return COLOR_ED1C24;
+		case 501: return COLOR_EC2027;
+		case 502: return COLOR_EC2027;
+		case 505: return COLOR_EC2027;
+		case 511: return COLOR_EC2027;
+		case 561: return COLOR_EC2027;
 		// @formatter:on
 		default:
 			System.out.printf("\nUnexpected route color '%s'\n", gRoute);
@@ -363,6 +367,13 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			return;
 		}
 		mTrip.setHeadsignString(cleanTripHeadsign(gTrip.getTripHeadsign()), gTrip.getDirectionId());
+	}
+
+	@Override
+	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		System.out.printf("\nUnexpected trips to merge %s & %s!\n", mTrip, mTripToMerge);
+		System.exit(-1);
+		return false;
 	}
 
 	@Override
