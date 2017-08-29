@@ -225,6 +225,9 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 561: return COLOR_EC2027;
 		// @formatter:on
 		default:
+			if (isGoodEnoughAccepted()) {
+				return null;
+			}
 			System.out.printf("\nUnexpected route color '%s'\n", gRoute);
 			System.exit(-1);
 			return null;
@@ -292,6 +295,9 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void setTripHeadsign(MRoute mRoute, MTrip mTrip, GTrip gTrip, GSpec gtfs) {
+		if (ALL_ROUTE_TRIPS2.containsKey(mRoute.getId())) {
+			return; // split
+		}
 		String gTripHeadsignLC = gTrip.getTripHeadsign().toLowerCase(Locale.ENGLISH);
 		int indexOfTO = gTripHeadsignLC.indexOf(TO);
 		if (indexOfTO >= 0) {
@@ -417,6 +423,9 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		if (isGoodEnoughAccepted()) {
+			return super.mergeHeadsign(mTrip, mTripToMerge);
+		}
 		System.out.printf("\nUnexpected trips to merge %s & %s!\n", mTrip, mTripToMerge);
 		System.exit(-1);
 		return false;
