@@ -70,10 +70,18 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean excludeTrip(GTrip gTrip) {
+		if (gTrip.getTripHeadsign().equalsIgnoreCase("SORRY...NOT IN SERVICE")) {
+			return true;
+		}
 		if (this.serviceIds != null) {
 			return excludeUselessTrip(gTrip, this.serviceIds);
 		}
 		return super.excludeTrip(gTrip);
+	}
+
+	@Override
+	public boolean excludeRoute(GRoute gRoute) {
+		return super.excludeRoute(gRoute);
 	}
 
 	@Override
@@ -103,126 +111,82 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
-	private static final String COLOR_04567E = "04567E";
-	private static final String COLOR_274867 = "274867";
-	private static final String COLOR_EC2027 = "EC2027";
-	private static final String COLOR_1B62B7 = "1B62B7";
-	private static final String COLOR_8DC73F = "8DC73F";
-	private static final String COLOR_009081 = "009081";
-	private static final String COLOR_F26667 = "F26667";
-	private static final String COLOR_1E6649 = "1E6649";
-	private static final String COLOR_9E76B4 = "9E76B4";
-	private static final String COLOR_0066B3 = "0066B3";
-	private static final String COLOR_0095DA = "0095DA";
-	private static final String COLOR_2E917D = "2E917D";
-	private static final String COLOR_56C5D0 = "56C5D0";
-	private static final String COLOR_32327B = "32327B";
-	private static final String COLOR_942976 = "942976";
-	private static final String COLOR_F48473 = "F48473";
-	private static final String COLOR_41827C = "41827C";
-	private static final String COLOR_E4A024 = "E4A024";
-	private static final String COLOR_005F8C = "005F8C";
-	private static final String COLOR_A52868 = "A52868";
-	private static final String COLOR_8FAA5E = "8FAA5E";
-	private static final String COLOR_164E87 = "164E87";
-	private static final String COLOR_F7931D = "F7931D";
-	private static final String COLOR_BB7831 = "BB7831";
-	private static final String COLOR_EC008C = "EC008C";
-	private static final String COLOR_0071BC = "0071BC";
-	private static final String COLOR_00907F = "00907F";
-	private static final String COLOR_CA636C = "CA636C";
-	private static final String COLOR_AD855A = "AD855A";
-	private static final String COLOR_007F9E = "007F9E";
-	private static final String COLOR_DC5942 = "DC5942";
-	private static final String COLOR_79A342 = "79A342";
-	private static final String COLOR_805281 = "805281";
-	private static final String COLOR_00A88E = "00A88E";
-	private static final String COLOR_CF8B2D = "CF8B2D";
-	private static final String COLOR_029CAA = "029CAA";
-	private static final String COLOR_007A5E = "007A5E";
-	private static final String COLOR_8B4A8A = "8B4A8A";
-	private static final String COLOR_A6664C = "A6664C";
-	private static final String COLOR_00AEEF = "00AEEF";
-	private static final String COLOR_C6168D = "C6168D";
-	private static final String COLOR_2E3092 = "2E3092";
-	private static final String COLOR_0161AB = "0161AB";
-	private static final String COLOR_F16567 = "F16567";
-
 	@Override
 	public String getRouteColor(GRoute gRoute) {
 		int rsn = Integer.parseInt(gRoute.getRouteShortName());
 		switch (rsn) {
 		// @formatter:off
-		case 1: return COLOR_2E3092;
-		case 2: return COLOR_C6168D;
-		case 3: return COLOR_00AEEF;
-		case 4: return COLOR_A6664C;
-		case 5: return COLOR_007A5E;
-		case 6: return COLOR_8B4A8A;
-		case 7: return COLOR_029CAA;
-		case 8: return COLOR_CF8B2D;
-		case 9: return COLOR_00A88E;
-		case 10: return COLOR_805281;
-		case 11: return COLOR_79A342;
-		case 12: return COLOR_DC5942;
-		case 13: return COLOR_007F9E;
-		case 14: return COLOR_AD855A;
-		case 15: return COLOR_CA636C;
-		case 16: return COLOR_00907F;
-		case 17: return COLOR_0071BC;
-		case 18: return COLOR_EC008C;
-		case 19: return COLOR_BB7831;
-		case 20: return COLOR_F7931D;
-		case 21: return COLOR_164E87;
-		case 23: return COLOR_8FAA5E;
-		case 24: return COLOR_A52868;
-		case 25: return COLOR_005F8C;
-		case 26: return COLOR_029CAA;
-		case 29: return COLOR_E4A024;
-		case 30: return COLOR_41827C;
-		case 31: return COLOR_F48473;
-		case 32: return COLOR_942976;
-		case 33: return COLOR_32327B;
-		case 35: return COLOR_F7931D;
-		case 36: return COLOR_2E917D;
-		case 40: return COLOR_56C5D0;
-		case 50: return COLOR_0095DA;
-		case 51: return COLOR_E4A024;
-		case 52: return COLOR_0066B3;
-		case 53: return COLOR_F48473;
-		case 54: return COLOR_9E76B4;
-		case 55: return COLOR_F16567;
-		case 56: return COLOR_F26667;
-		case 57: return COLOR_1E6649;
-		case 58: return COLOR_009081;
-		case 60: return COLOR_1B62B7;
-		case 92: return COLOR_8DC73F;
-		case 115: return COLOR_274867;
-		case 185: return COLOR_04567E;
-		case 199: return COLOR_04567E;
-		case 200: return COLOR_0161AB;
-		case 201: return COLOR_0161AB;
-		case 202: return COLOR_0161AB;
-		case 203: return COLOR_0161AB;
-		case 204: return COLOR_0161AB;
-		case 205: return COLOR_0161AB;
-		case 206: return COLOR_0161AB;
-		case 207: return COLOR_0161AB;
-		case 208: return COLOR_0161AB;
-		case 209: return COLOR_0161AB;
-		case 210: return COLOR_0161AB;
-		case 211: return COLOR_0161AB;
-		case 212: return COLOR_0161AB;
-		case 213: return COLOR_0161AB;
-		case 214: return COLOR_0161AB;
-		case 215: return COLOR_0161AB;
-		case 216: return COLOR_0161AB;
-		case 217: return COLOR_0161AB;
-		case 501: return COLOR_EC2027;
-		case 502: return COLOR_EC2027;
-		case 505: return COLOR_EC2027;
-		case 511: return COLOR_EC2027;
-		case 561: return COLOR_EC2027;
+		case 1: return "2E3092";
+		case 2: return "C6168D";
+		case 3: return "00AEEF";
+		case 4: return "A6664C";
+		case 5: return "007A5E";
+		case 6: return "8B4A8A";
+		case 7: return "029CAA";
+		case 8: return "CF8B2D";
+		case 9: return "00A88E";
+		case 10: return "805281";
+		case 11: return "79A342";
+		case 12: return "DC5942";
+		case 13: return "007F9E";
+		case 14: return "AD855A";
+		case 15: return "CA636C";
+		case 16: return "00907F";
+		case 17: return "0071BC";
+		case 18: return "EC008C";
+		case 19: return "BB7831";
+		case 20: return "F7931D";
+		case 21: return "164E87";
+		case 23: return "8FAA5E";
+		case 24: return "A52868";
+		case 25: return "005F8C";
+		case 26: return "029CAA";
+		case 29: return "E4A024";
+		case 30: return "41827C";
+		case 31: return "F48473";
+		case 32: return "942976";
+		case 33: return "32327B";
+		case 35: return "F7931D";
+		case 36: return "2E917D";
+		case 40: return "56C5D0";
+		case 50: return "0095DA";
+		case 51: return "E4A024";
+		case 52: return "0066B3";
+		case 53: return "F48473";
+		case 54: return "9E76B4";
+		case 55: return "F16567";
+		case 56: return "F26667";
+		case 57: return "1E6649";
+		case 58: return "009081";
+		case 60: return "1B62B7";
+		case 92: return "8DC73F";
+		case 104: return "DB2375";
+		case 115: return "274867";
+		case 185: return "04567E";
+		case 199: return "04567E";
+		case 200: return "0161AB";
+		case 201: return "0161AB";
+		case 202: return "0161AB";
+		case 203: return "0161AB";
+		case 204: return "0161AB";
+		case 205: return "0161AB";
+		case 206: return "0161AB";
+		case 207: return "0161AB";
+		case 208: return "0161AB";
+		case 209: return "0161AB";
+		case 210: return "0161AB";
+		case 211: return "0161AB";
+		case 212: return "0161AB";
+		case 213: return "0161AB";
+		case 214: return "0161AB";
+		case 215: return "0161AB";
+		case 216: return "0161AB";
+		case 217: return "0161AB";
+		case 501: return "EC2027";
+		case 502: return "EC2027";
+		case 505: return "EC2027";
+		case 511: return "EC2027";
+		case 561: return "EC2027";
 		// @formatter:on
 		default:
 			if (isGoodEnoughAccepted()) {
@@ -324,91 +288,93 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		}
-		if (mRoute.getId() == 1l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.EAST);
+		if (isGoodEnoughAccepted()) {
+			if (mRoute.getId() == 1l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.EAST);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.WEST);
+					return;
+				}
+			} else if (mRoute.getId() == 7l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.NORTH);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 9l) {
+				if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.WEST);
+					return;
+				}
+			} else if (mRoute.getId() == 14l) {
+				if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 15l) {
+				if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 18l) {
+				if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 26l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.WEST);
+			} else if (mRoute.getId() == 30l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.NORTH);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 32l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			}
-		} else if (mRoute.getId() == 7l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.NORTH);
+			} else if (mRoute.getId() == 33l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+			} else if (mRoute.getId() == 50l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.NORTH);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 53l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			}
-		} else if (mRoute.getId() == 9l) {
-			if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.WEST);
+			} else if (mRoute.getId() == 54l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			}
-		} else if (mRoute.getId() == 14l) {
-			if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+			} else if (mRoute.getId() == 57l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.NORTH);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.SOUTH);
+					return;
+				}
+			} else if (mRoute.getId() == 58l) {
+				mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 				return;
-			}
-		} else if (mRoute.getId() == 15l) {
-			if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
-				return;
-			}
-		} else if (mRoute.getId() == 18l) {
-			if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
-				return;
-			}
-		} else if (mRoute.getId() == 26l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 30l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.NORTH);
-				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
-				return;
-			}
-		} else if (mRoute.getId() == 32l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 33l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 50l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.NORTH);
-				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
-				return;
-			}
-		} else if (mRoute.getId() == 53l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 54l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 57l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.NORTH);
-				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.SOUTH);
-				return;
-			}
-		} else if (mRoute.getId() == 58l) {
-			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
-			return;
-		} else if (mRoute.getId() == 501l) {
-			if (gTrip.getDirectionId() == 0) {
-				mTrip.setHeadsignDirection(MDirectionType.EAST);
-				return;
-			} else if (gTrip.getDirectionId() == 1) {
-				mTrip.setHeadsignDirection(MDirectionType.WEST);
-				return;
+			} else if (mRoute.getId() == 501l) {
+				if (gTrip.getDirectionId() == 0) {
+					mTrip.setHeadsignDirection(MDirectionType.EAST);
+					return;
+				} else if (gTrip.getDirectionId() == 1) {
+					mTrip.setHeadsignDirection(MDirectionType.WEST);
+					return;
+				}
 			}
 		}
 		if (gTripHeadsignLC.endsWith(ENDS_WITH_AM)) {
