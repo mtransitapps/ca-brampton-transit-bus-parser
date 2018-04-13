@@ -233,18 +233,25 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	private static final String WEST = "west";
 	private static final String WB = "wb";
 	private static final String WB_ = " wb-";
+	private static final String WB__ = " wb -";
+
 	private static final String EASTBOUND = "eastbound";
 	private static final String EAST = "east";
 	private static final String EB = "eb";
 	private static final String EB_ = " eb-";
+	private static final String EB__ = " eb -";
+
 	private static final String SOUTHBOUND = "southbound";
 	private static final String SOUTH = "south";
 	private static final String SB = "sb";
 	private static final String SB_ = " sb-";
+	private static final String SB__ = " sb -";
+
 	private static final String NORTHBOUND = "northbound";
 	private static final String NORTH = "north";
 	private static final String NB = "nb";
 	private static final String NB_ = " nb-";
+	private static final String NB__ = " nb -";
 
 	private static final String TO = " to ";
 	private static final String VIA = " via ";
@@ -272,16 +279,20 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		if (indexOfVIA >= 0) {
 			gTripHeadsignLC = gTripHeadsignLC.substring(0, indexOfVIA);
 		}
-		if (gTripHeadsignLC.endsWith(NORTH) || gTripHeadsignLC.endsWith(NORTHBOUND) || gTripHeadsignLC.endsWith(NB) || gTripHeadsignLC.contains(NB_)) {
+		if (gTripHeadsignLC.endsWith(NORTH) || gTripHeadsignLC.endsWith(NORTHBOUND) || gTripHeadsignLC.endsWith(NB) //
+				|| gTripHeadsignLC.contains(NB_) || gTripHeadsignLC.contains(NB__)) {
 			mTrip.setHeadsignDirection(MDirectionType.NORTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(SOUTH) || gTripHeadsignLC.endsWith(SOUTHBOUND) || gTripHeadsignLC.endsWith(SB) || gTripHeadsignLC.contains(SB_)) {
+		} else if (gTripHeadsignLC.endsWith(SOUTH) || gTripHeadsignLC.endsWith(SOUTHBOUND) || gTripHeadsignLC.endsWith(SB) //
+				|| gTripHeadsignLC.contains(SB_) || gTripHeadsignLC.contains(SB__)) {
 			mTrip.setHeadsignDirection(MDirectionType.SOUTH);
 			return;
-		} else if (gTripHeadsignLC.endsWith(EAST) || gTripHeadsignLC.endsWith(EASTBOUND) || gTripHeadsignLC.endsWith(EB) || gTripHeadsignLC.contains(EB_)) {
+		} else if (gTripHeadsignLC.endsWith(EAST) || gTripHeadsignLC.endsWith(EASTBOUND) || gTripHeadsignLC.endsWith(EB) //
+				|| gTripHeadsignLC.contains(EB_) || gTripHeadsignLC.contains(EB__)) {
 			mTrip.setHeadsignDirection(MDirectionType.EAST);
 			return;
-		} else if (gTripHeadsignLC.endsWith(WEST) || gTripHeadsignLC.endsWith(WESTBOUND) || gTripHeadsignLC.endsWith(WB) || gTripHeadsignLC.contains(WB_)) {
+		} else if (gTripHeadsignLC.endsWith(WEST) || gTripHeadsignLC.endsWith(WESTBOUND) || gTripHeadsignLC.endsWith(WB) //
+				|| gTripHeadsignLC.contains(WB_) || gTripHeadsignLC.contains(WB__)) {
 			mTrip.setHeadsignDirection(MDirectionType.WEST);
 			return;
 		}
