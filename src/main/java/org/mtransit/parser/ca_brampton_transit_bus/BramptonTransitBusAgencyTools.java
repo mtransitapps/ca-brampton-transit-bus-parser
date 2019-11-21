@@ -1,18 +1,12 @@
 package org.mtransit.parser.ca_brampton_transit_bus;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
+import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Pair;
 import org.mtransit.parser.SplitUtils;
-import org.mtransit.parser.Utils;
 import org.mtransit.parser.SplitUtils.RouteTripSpec;
+import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
 import org.mtransit.parser.gtfs.data.GRoute;
@@ -23,9 +17,16 @@ import org.mtransit.parser.gtfs.data.GTripStop;
 import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
-import org.mtransit.parser.mt.data.MTripStop;
-import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.mt.data.MTrip;
+import org.mtransit.parser.mt.data.MTripStop;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 // http://www.brampton.ca/EN/city-hall/opengov/open-data-catalogue/Pages/Welcome.aspx
 // http://www.brampton.ca/EN/City-Hall/OpenGov/Open-Data-Catalogue/Documents/Google_Transit.zip
@@ -45,11 +46,11 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void start(String[] args) {
-		System.out.printf("\nGenerating Brampton Transit bus data...");
+		MTLog.log("Generating Brampton Transit bus data...");
 		long start = System.currentTimeMillis();
 		this.serviceIds = extractUsefulServiceIds(args, this);
 		super.start(args);
-		System.out.printf("\nGenerating Brampton Transit bus data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+		MTLog.log("Generating Brampton Transit bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -147,6 +148,8 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 24: return "A52868";
 		case 25: return "005F8C";
 		case 26: return "029CAA";
+		case 27: return null; // TODO ?
+		case 28: return null; // TODO ?
 		case 29: return "E4A024";
 		case 30: return "41827C";
 		case 31: return "F48473";
@@ -165,6 +168,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 57: return "1E6649";
 		case 58: return "009081";
 		case 60: return "1B62B7";
+		case 81: return null; // TODO ?
 		case 92: return "8DC73F";
 		case 104: return "DB2375";
 		case 115: return "274867";
@@ -195,18 +199,16 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 561: return "EC2027";
 		// @formatter:on
 		default:
-			if (isGoodEnoughAccepted()) {
-				return null;
-			}
-			System.out.printf("\nUnexpected route color '%s'\n", gRoute);
-			System.exit(-1);
+			MTLog.logFatal("Unexpected route color '%s'", gRoute);
 			return null;
 		}
 	}
 
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
+
 	static {
-		HashMap<Long, RouteTripSpec> map2 = new HashMap<Long, RouteTripSpec>();
+		//noinspection UnnecessaryLocalVariable
+		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
 		ALL_ROUTE_TRIPS2 = map2;
 	}
 
@@ -305,32 +307,32 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			mTrip.setHeadsignString(LOOP, gTrip.getDirectionId());
 			return;
 		}
-		if (isGoodEnoughAccepted()) {
-			if (mRoute.getId() == 11l) {
-				if (gTripHeadsignLC.endsWith(" eb - gate")) {
-					mTrip.setHeadsignDirection(MDirectionType.EAST);
-					return;
-				}
-			} else if (mRoute.getId() == 30l) {
-				if (gTripHeadsignLC.endsWith(" north - amb")) {
-					mTrip.setHeadsignDirection(MDirectionType.NORTH);
-					return;
-				}
-			} else if (mRoute.getId() == 501l) {
-				if (gTripHeadsignLC.endsWith(" west-407")) {
-					mTrip.setHeadsignDirection(MDirectionType.WEST);
-					return;
-				} else if (gTripHeadsignLC.endsWith(" east-407")) {
-					mTrip.setHeadsignDirection(MDirectionType.EAST);
-					return;
-				}
-			} else if (mRoute.getId() == 511l) {
-				if (gTripHeadsignLC.endsWith(" east-gtt")) {
-					mTrip.setHeadsignDirection(MDirectionType.EAST);
-					return;
-				}
+		// TODO ? if (isGoodEnoughAccepted()) {
+		if (mRoute.getId() == 11L) {
+			if (gTripHeadsignLC.endsWith(" eb - gate")) {
+				mTrip.setHeadsignDirection(MDirectionType.EAST);
+				return;
+			}
+		} else if (mRoute.getId() == 30L) {
+			if (gTripHeadsignLC.endsWith(" north - amb")) {
+				mTrip.setHeadsignDirection(MDirectionType.NORTH);
+				return;
+			}
+		} else if (mRoute.getId() == 501L) {
+			if (gTripHeadsignLC.endsWith(" west-407")) {
+				mTrip.setHeadsignDirection(MDirectionType.WEST);
+				return;
+			} else if (gTripHeadsignLC.endsWith(" east-407")) {
+				mTrip.setHeadsignDirection(MDirectionType.EAST);
+				return;
+			}
+		} else if (mRoute.getId() == 511L) {
+			if (gTripHeadsignLC.endsWith(" east-gtt")) {
+				mTrip.setHeadsignDirection(MDirectionType.EAST);
+				return;
 			}
 		}
+		// }
 		if (gTripHeadsignLC.endsWith(ENDS_WITH_AM)) {
 			mTrip.setHeadsignString(AM, gTrip.getDirectionId());
 			return;
@@ -346,8 +348,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		if (isGoodEnoughAccepted()) {
 			return super.mergeHeadsign(mTrip, mTripToMerge);
 		}
-		System.out.printf("\nUnexpected trips to merge %s & %s!\n", mTrip, mTripToMerge);
-		System.exit(-1);
+		MTLog.logFatal("Unexpected trips to merge %s & %s!", mTrip, mTripToMerge);
 		return false;
 	}
 
@@ -373,7 +374,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	@Override
 	public int getStopId(GStop gStop) {
 		String stopId = gStop.getStopId();
-		if (stopId != null && stopId.length() > 0 && Utils.isDigitsOnly(stopId)) {
+		if (stopId.length() > 0 && Utils.isDigitsOnly(stopId)) {
 			return Integer.valueOf(stopId);
 		}
 		try {
@@ -381,13 +382,10 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 			if (matcher.find()) {
 				return Integer.parseInt(matcher.group());
 			}
-			System.out.printf("\nUnexpected stop ID  %s!\n", gStop);
-			System.exit(-1);
+			MTLog.logFatal("Unexpected stop ID  %s!", gStop);
 			return -1;
 		} catch (Exception e) {
-			System.out.printf("\nError while finding stop ID for %s.\n", gStop);
-			e.printStackTrace();
-			System.exit(-1);
+			MTLog.logFatal(e, "Error while finding stop ID for %s.", gStop);
 			return -1;
 		}
 	}
