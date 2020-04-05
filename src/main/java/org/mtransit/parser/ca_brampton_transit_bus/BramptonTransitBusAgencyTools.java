@@ -28,8 +28,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// http://www.brampton.ca/EN/city-hall/opengov/open-data-catalogue/Pages/Welcome.aspx
-// http://www.brampton.ca/EN/City-Hall/OpenGov/Open-Data-Catalogue/Documents/Google_Transit.zip
+// https://geohub.brampton.ca/pages/data/
+// https://geohub.brampton.ca/pages/brampton-transit
+// https://www.brampton.ca//EN/City-Hall/OpenGov/Open-Data-Catalogue/Pages/Data-Set-Details.aspx?ItemID=1
+// https://www.brampton.ca/EN/City-Hall/OpenGov/Open-Data-Catalogue/Documents/Google_Transit.zip
 public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
@@ -48,7 +50,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	public void start(String[] args) {
 		MTLog.log("Generating Brampton Transit bus data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this);
+		this.serviceIds = extractUsefulServiceIds(args, this, true);
 		super.start(args);
 		MTLog.log("Generating Brampton Transit bus data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
