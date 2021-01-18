@@ -215,8 +215,8 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	private static final String LOOP_LC = "loop";
 
-	private static final String ENDS_WITH_AM = " am";
-	private static final String ENDS_WITH_PM = " pm";
+	private static final String AM_LC = "am";
+	private static final String PM_LC = "pm";
 
 	@Override
 	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
@@ -241,31 +241,26 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	public MDirectionType convertDirection(@Nullable String headSign) {
 		if (headSign != null) {
 			final String headSignLC = headSign.toLowerCase(Locale.ENGLISH);
-			if (headSignLC.endsWith(NORTH_LC)
-					|| headSignLC.endsWith(NB_LC)
-					|| headSignLC.endsWith(NORTHBOUND_LC)
-			) {
+			switch (headSignLC) {
+			case NORTH_LC:
+			case NB_LC:
+			case NORTHBOUND_LC:
 				return MDirectionType.NORTH;
-			} else if (headSignLC.endsWith(SOUTH_LC)
-					|| headSignLC.endsWith(SB_LC)
-					|| headSignLC.endsWith(SOUTHBOUND_LC)
-			) {
+			case SOUTH_LC:
+			case SB_LC:
+			case SOUTHBOUND_LC:
 				return MDirectionType.SOUTH;
-			} else if (headSignLC.endsWith(EAST_LC)
-					|| headSignLC.endsWith(EB_LC)
-					|| headSignLC.endsWith(EASTBOUND_LC)
-			) {
+			case EAST_LC:
+			case EB_LC:
+			case EASTBOUND_LC:
 				return MDirectionType.EAST;
-			} else if (headSignLC.endsWith(WEST_LC)
-					|| headSignLC.endsWith(WB_LC)
-					|| headSignLC.endsWith(WESTBOUND_LC)
-			) {
+			case WEST_LC:
+			case WB_LC:
+			case WESTBOUND_LC:
 				return MDirectionType.WEST;
-			} else if (headSignLC.endsWith(LOOP_LC)) {
-				return null;
-			} else if (headSignLC.endsWith(ENDS_WITH_AM)) {
-				return null;
-			} else if (headSignLC.endsWith(ENDS_WITH_PM)) {
+			case LOOP_LC:
+			case AM_LC:
+			case PM_LC:
 				return null;
 			}
 		} else {
