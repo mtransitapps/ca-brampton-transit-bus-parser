@@ -2,10 +2,11 @@ package org.mtransit.parser.ca_brampton_transit_bus;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.mtransit.parser.CleanUtils;
+import org.mtransit.commons.CharUtils;
+import org.mtransit.commons.CleanUtils;
+import org.mtransit.commons.StringUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
-import org.mtransit.parser.StringUtils;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
@@ -14,11 +15,12 @@ import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
 import org.mtransit.parser.mt.data.MAgency;
-import org.mtransit.parser.mt.data.MDirectionType;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,19 +76,14 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean excludeTrip(@NotNull GTrip gTrip) {
-		if (gTrip.getTripHeadsign().equalsIgnoreCase("SORRY...NOT IN SERVICE") //
-				|| gTrip.getTripHeadsign().equalsIgnoreCase("DROP OFF ONLY - NOT IN SERVICE")) {
+		final String tripHeadsign = gTrip.getTripHeadsignOrDefault().toLowerCase(Locale.ENGLISH);
+		if (tripHeadsign.contains("not in service")) {
 			return true;
 		}
 		if (this.serviceIdInts != null) {
 			return excludeUselessTripInt(gTrip, this.serviceIdInts);
 		}
 		return super.excludeTrip(gTrip);
-	}
-
-	@Override
-	public boolean excludeRoute(@NotNull GRoute gRoute) {
-		return super.excludeRoute(gRoute);
 	}
 
 	@NotNull
@@ -197,32 +194,11 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return super.getRouteColor(gRoute);
 	}
 
-	private static final String WESTBOUND_LC = "westbound";
-	private static final String WEST_LC = "west";
-	private static final String WB_LC = "wb";
-
-	private static final String EASTBOUND_LC = "eastbound";
-	private static final String EAST_LC = "east";
-	private static final String EB_LC = "eb";
-
-	private static final String SOUTHBOUND_LC = "southbound";
-	private static final String SOUTH_LC = "south";
-	private static final String SB_LC = "sb";
-
-	private static final String NORTHBOUND_LC = "northbound";
-	private static final String NORTH_LC = "north";
-	private static final String NB_LC = "nb";
-
-	private static final String LOOP_LC = "loop";
-
-	private static final String AM_LC = "am";
-	private static final String PM_LC = "pm";
-
 	@Override
 	public void setTripHeadsign(@NotNull MRoute mRoute, @NotNull MTrip mTrip, @NotNull GTrip gTrip, @NotNull GSpec gtfs) {
 		mTrip.setHeadsignString(
-				cleanTripHeadsign(gTrip.getTripHeadsign()),
-				gTrip.getDirectionId()
+				cleanTripHeadsign(gTrip.getTripHeadsignOrDefault()),
+				gTrip.getDirectionIdOrDefault()
 		);
 	}
 
@@ -231,42 +207,13 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return true;
 	}
 
+	@NotNull
 	@Override
-	public int getDirectionType() {
-		return MTrip.HEADSIGN_TYPE_DIRECTION;
-	}
-
-	@Nullable
-	@Override
-	public MDirectionType convertDirection(@Nullable String headSign) {
-		if (headSign != null) {
-			final String headSignLC = headSign.toLowerCase(Locale.ENGLISH);
-			switch (headSignLC) {
-			case NORTH_LC:
-			case NB_LC:
-			case NORTHBOUND_LC:
-				return MDirectionType.NORTH;
-			case SOUTH_LC:
-			case SB_LC:
-			case SOUTHBOUND_LC:
-				return MDirectionType.SOUTH;
-			case EAST_LC:
-			case EB_LC:
-			case EASTBOUND_LC:
-				return MDirectionType.EAST;
-			case WEST_LC:
-			case WB_LC:
-			case WESTBOUND_LC:
-				return MDirectionType.WEST;
-			case LOOP_LC:
-			case AM_LC:
-			case PM_LC:
-				return null;
-			}
-		} else {
-			throw new MTLog.Fatal("Unexpected direction for '%s'!", headSign);
-		}
-		return null;
+	public List<Integer> getDirectionTypes() {
+		return Arrays.asList(
+				MTrip.HEADSIGN_TYPE_DIRECTION,
+				MTrip.HEADSIGN_TYPE_STRING
+		);
 	}
 
 	@Override
@@ -274,7 +221,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		throw new MTLog.Fatal("Unexpected trips to merge %s & %s!", mTrip, mTripToMerge);
 	}
 
-	private static final Pattern PARSE_HEAD_SIGN_ = Pattern.compile("(^\\d+([a-z]?)((\\s+)(\\w+))+((-| - | to )(.*))?)$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern PARSE_HEAD_SIGN_ = Pattern.compile("(^\\d+([a-z]?)((\\s+)(\\w+))+((-| - | to )(.*))?$)", Pattern.CASE_INSENSITIVE);
 	private static final String PARSE_HEAD_SIGN_KEEP_BOUND = "$5";
 
 	@NotNull
@@ -326,7 +273,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	public int getStopId(@NotNull GStop gStop) {
 		//noinspection deprecation
 		String stopId = gStop.getStopId();
-		if (stopId.length() > 0 && Utils.isDigitsOnly(stopId)) {
+		if (stopId.length() > 0 && CharUtils.isDigitsOnly(stopId)) {
 			return Integer.parseInt(stopId);
 		}
 		try {
