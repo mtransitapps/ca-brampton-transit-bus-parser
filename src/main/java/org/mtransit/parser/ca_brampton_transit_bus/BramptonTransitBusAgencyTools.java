@@ -21,10 +21,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// https://geohub.brampton.ca/pages/data/
 // https://geohub.brampton.ca/pages/brampton-transit
-// https://www.brampton.ca//EN/City-Hall/OpenGov/Open-Data-Catalogue/Pages/Data-Set-Details.aspx?ItemID=1
-// https://www.brampton.ca/EN/City-Hall/OpenGov/Open-Data-Catalogue/Documents/Google_Transit.zip
+// https://brampton.maps.arcgis.com/home/item.html?id=a355aabd5a8c490186bdce559c9c75fb
+// https://www.arcgis.com/sharing/rest/content/items/a355aabd5a8c490186bdce559c9c75fb/data
+// OLD: https://www.brampton.ca/EN/City-Hall/OpenGov/Open-Data-Catalogue/Documents/Google_Transit.zip
 public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	public static void main(@NotNull String[] args) {
@@ -188,7 +188,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 
 	@NotNull
 	@Override
-	public String cleanDirectionHeadsign(boolean fromStopName, @NotNull String directionHeadSign) {
+	public String cleanDirectionHeadsign(int directionId, boolean fromStopName, @NotNull String directionHeadSign) {
 		directionHeadSign = CleanUtils.toLowerCaseUpperCaseWords(Locale.ENGLISH, directionHeadSign, getIgnoreWords());
 		//noinspection deprecation
 		directionHeadSign = CleanUtils.removePoints(directionHeadSign); // before parse
