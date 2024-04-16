@@ -81,6 +81,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		return AGENCY_COLOR;
 	}
 
+	// https://www.brampton.ca/EN/residents/transit/plan-your-trip/Pages/Schedules-and-Maps.aspx
 	@Override
 	public @Nullable String provideMissingRouteColor(@NotNull GRoute gRoute) {
 		final int rsn = Integer.parseInt(gRoute.getRouteShortName());
@@ -121,6 +122,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 35: return "F7931D";
 		case 36: return "2E917D";
 		case 40: return "56C5D0";
+		case 41: return "B77832";
 		case 50: return "0095DA";
 		case 51: return "E4A024";
 		case 52: return "0066B3";
@@ -163,7 +165,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 		case 561: return "EC2027";
 		// @formatter:on
 		default:
-			throw new MTLog.Fatal("Unexpected route color for '%s'", gRoute);
+			throw new MTLog.Fatal("Unexpected route color for '%s'", gRoute.toStringPlus());
 		}
 	}
 
@@ -231,7 +233,7 @@ public class BramptonTransitBusAgencyTools extends DefaultAgencyTools {
 	public int getStopId(@NotNull GStop gStop) {
 		//noinspection deprecation
 		final String stopId = gStop.getStopId();
-		if (stopId.length() > 0 && CharUtils.isDigitsOnly(stopId)) {
+		if (!stopId.isEmpty() && CharUtils.isDigitsOnly(stopId)) {
 			return Integer.parseInt(stopId);
 		}
 		try {
